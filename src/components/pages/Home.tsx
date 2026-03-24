@@ -1,26 +1,35 @@
 import MarketCard from "../Market";
 import { useEffect,useState } from "react";
-import {getMarketData} from "../../services/api";
+import {getMarketData,getGainersLosers} from "../../services/api";
+import {LineChart,Line,ResponsiveContainer} from "recharts";
 
 
 function Home() {
   const [prices,setPrices] =useState<any>(null);
+  const [gainersLosers,setGainersLosers]=useState<any[]>([]);
+
   useEffect(()=>{
     async function fetchData(){
-      const data=await getMarketData();
-      setPrices(data);
+      const Marketdata=await getMarketData();
+      const gainersLosersData=await getGainersLosers();
+
+      setGainersLosers(gainersLosersData);
+      setPrices(Marketdata);
       
     }
     fetchData();
     //after 2 mins
     const interval = setInterval(fetchData, 120000);
-    // Cleanup (VERY IMPORTANT)
+    // Cleanup (VERY IMP!!!!)
     return () => clearInterval(interval);
     
   },[]);
+
   if(!prices){
     return <div>Please Wait.....</div>
   }
+
+  if (!gainersLosers.length) return <div>Loading market...</div>;
 
   const marketData=[
     {name:"BTC",price:prices.bitcoin.usd,change:prices.bitcoin.usd_24h_change},
@@ -29,8 +38,19 @@ function Home() {
     {name:"River",price:prices.river.usd,change:prices.river.usd_24h_change},
 
   ]
+
+  const gainers= [...gainersLosers]
+    .sort((a,b)=>b.price_change_percentage_24h - a.price_change_percentage_24h)
+    .slice(0,5);
+
+  const losers= [...gainersLosers]
+    .sort((a,b)=> a.price_change_percentage_24h - b.price_change_percentage_24h)
+    .slice(0,5);
+  
   return(
-    <div style={{ padding: "20px" }}>
+    
+    <div style={{ padding: "20px"}}>
+      <div className="section">
       <h1>Market Overview</h1>
 
       <div className="market-cards">
@@ -49,10 +69,106 @@ function Home() {
         ))
       }
       </div>
+      </div>
+    
 
       <div className="section">
-        <h2>Top Gainers / Losers</h2>
-      </div>
+        <h2 className="section-title">Top Gainers / Losers</h2>
+
+        <div className="gainers-losers-container">
+
+        {/* Gainers Card */}
+        <div className="card gainers-card">
+          <h3 className="card-title gainers">Top Gainers</h3>
+
+          {gainers.map((coin) => (
+            <div className="coin" key={coin.id}>
+              <div className="coin-info">
+                <img
+                  src={coin.image}
+                  alt={coin.name}
+                  className="coin-logo"
+                />
+                <div>
+                  <span className="coin-name">{coin.name}</span>
+                  <span className="coin-symbol">
+                    {coin.symbol.toUpperCase()}
+                  </span>
+                </div>
+                <div className="sparkline">
+    <ResponsiveContainer width={80} height={30}>
+      <LineChart
+        data={coin.sparkline_in_7d.price.map((p:number) => ({
+          value: p
+        })) || [] }
+      >
+        <Line
+          type="monotone"
+          dataKey="value"
+          stroke="#22c55e"
+          dot={false}
+          strokeWidth={2}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
+              </div>
+
+          <span className="positive">
+            +{coin.price_change_percentage_24h.toFixed(2)}%
+          </span>
+        </div>
+      ))}
+            </div>
+
+
+    {/* Losers Card */}
+    <div className="card losers-card">
+      <h3 className="card-title losers">Top Losers </h3>
+
+      {losers.map((coin) => (
+        <div className="coin" key={coin.id}>
+          <div className="coin-info">
+            <img
+              src={coin.image}
+              alt={coin.name}
+              className="coin-logo"
+            />
+            <div>
+              <span className="coin-name">{coin.name}</span>
+              <span className="coin-symbol">
+                {coin.symbol.toUpperCase()}
+              </span>
+            </div>
+            {/* Sparkline Chart */}
+  <div className="sparkline">
+    <ResponsiveContainer width={80} height={30}>
+      <LineChart
+        data={coin.sparkline_in_7d.price.map((p:number) => ({
+          value: p
+        })) || [] }
+      >
+        <Line
+          type="monotone"
+          dataKey="value"
+          stroke= "#ef4444"
+          dot={false}
+          strokeWidth={2}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
+          </div>
+
+          <span className="negative">
+            {coin.price_change_percentage_24h.toFixed(2)}%
+          </span>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</div>
 
       <div className="section">
         <h2>Market Heatmap</h2>
