@@ -115,7 +115,9 @@ function Home() {
               </div>
 
           <span className="positive">
-            +{coin.price_change_percentage_24h.toFixed(2)}%
+          {coin.price_change_percentage_24h != null
+            ? `+${coin.price_change_percentage_24h.toFixed(2)}%`
+            : "N/A"}
           </span>
         </div>
       ))}
@@ -161,8 +163,10 @@ function Home() {
           </div>
 
           <span className="negative">
-            {coin.price_change_percentage_24h.toFixed(2)}%
-          </span>
+          {coin.price_change_percentage_24h != null
+            ? `${coin.price_change_percentage_24h.toFixed(2)}%`
+            : "N/A"}
+        </span>
         </div>
       ))}
     </div>
