@@ -2,6 +2,8 @@ import MarketCard from "../Market";
 import { useEffect,useState } from "react";
 import {getMarketData,getGainersLosers} from "../../services/api";
 import {LineChart,Line,ResponsiveContainer} from "recharts";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 
 function Home() {
@@ -26,10 +28,17 @@ function Home() {
   },[]);
 
   if(!prices){
-    return <div>Please Wait.....</div>
+    return <h1 style={{color:"#22c55e"}}>Loading Market Data...</h1>;
   }
 
-  if (!gainersLosers.length) return <div>Loading market...</div>;
+  if (!gainersLosers.length) return <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+  <Skeleton width={150} height={25} />
+  <Skeleton width={100} height={20} />
+  <Skeleton  height={300} />
+  <Skeleton  height={300} />
+  <Skeleton  height={300} />
+
+</div>;
 
   const marketData=[
     {name:"BTC",price:prices.bitcoin.usd,change:prices.bitcoin.usd_24h_change},

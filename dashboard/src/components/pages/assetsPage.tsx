@@ -7,6 +7,8 @@ import {
   XAxis,
   Tooltip,
 } from "recharts";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function calculateRSI(prices: number[], period = 14) {
   if (prices.length < period + 1) return null;
@@ -81,10 +83,49 @@ export default function AssetPage() {
   }, [symbol, days]);
   
 
-  if (!data) return <h2>Loading...</h2>;
+  if (!data) return 
+    <SkeletonTheme baseColor="#202020" highlightColor="#444">
+      <div
+        style={{
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "24px",
+        }}
+      >
+        {/* Title */}
+        <Skeleton height={35} width={220} />
+
+        {/* Price row */}
+        <div style={{ display: "flex", gap: "40px" }}>
+          <Skeleton height={25} width={140} />
+          <Skeleton height={25} width={140} />
+          <Skeleton height={25} width={140} />
+        </div>
+
+        {/* Timeframe buttons */}
+        <div style={{ display: "flex", gap: "12px" }}>
+          {Array(4)
+            .fill(0)
+            .map((_, i) => (
+              <Skeleton key={i} height={35} width={60} />
+            ))}
+        </div>
+
+        {/* Chart area */}
+        <Skeleton height={300} />
+
+        {/* RSI section */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <Skeleton height={20} width={120} />
+          <Skeleton height={10} />
+        </div>
+      </div>
+    </SkeletonTheme>
+
 
   return (
-    <div style={{ padding: "20px", color: "#22c55e" }}>
+    <div style={{maxWidth: "1200px", margin:"0 auto", padding: "20px", color: "#22c55e" }}>
       <h1>{data.name} Dashboard</h1>
 
       <h2>Price: ${data.current_price}</h2>
@@ -133,16 +174,54 @@ export default function AssetPage() {
           </LineChart>
         </ResponsiveContainer>
       </div>
-          {rsi !== null && (
-      <div style={{ marginTop: "20px", fontSize: "18px" }}>
-        <strong>RSI:</strong> {rsi.toFixed(2)}{" "}
-        {rsi > 70
-          ? "🔴 Overbought"
-          : rsi < 30
-          ? "🟢 Oversold"
-          : "⚪ Neutral"}
-      </div>
-    )}
+         
+           {rsi !== null && (
+            <div
+              style={{
+                border: "1px solid #444",
+                padding: "20px",
+                borderRadius: "12px",
+                background: "#111",
+                marginTop: "25px",
+                // maxWidth: "400px",
+                width:"80%"
+              }}
+            >
+              <div style={{ fontSize: "18px", marginBottom: "6px"}}>
+                <strong>RSI (14): </strong>
+                <span
+                  style={{
+                    color: rsi > 70 ? "#ef4444" : rsi < 30 ? "#22c55e" : "#eab308",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {rsi.toFixed(2)}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  height: "8px",
+                  width: "100%",
+                  background: "#222",
+                  borderRadius: "6px",
+                  overflow: "hidden",
+                }}
+              >
+              <div
+                style={{
+                  width: `${rsi}%`,
+                  height: "100%",
+                  background: rsi > 70 ? "#ef4444" : rsi < 30 ? "#22c55e" : "#eab308",
+                }}
+              />
+            </div>
+
+            <div style={{ marginTop: "6px", fontSize: "14px", opacity: 0.8 }}>
+              {rsi > 70 ? "Overbought" : rsi < 30 ? "Oversold" : "Neutral"}
+            </div>
+          </div>
+        )}
     </div>
   );
 }
