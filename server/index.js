@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+let cache = null;
+let lastFetchTime = 0;
 
 const app = express();
 app.use(cors({
@@ -9,12 +11,19 @@ app.use(cors({
 const PORT = process.env.PORT || 5000;
 
 app.get("/api/market-data", async (req, res) => {
+  const now = Date.now();
   try {
+    if (cache && now - lastFetchTime < 60000) {
+    return res.json(cache);
+  }
+
     const response = await fetch(
       "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,pax-gold,river&vs_currencies=usd&include_24hr_change=true"
     );
-
+    
     const data = await response.json();
+    cache = data;
+    lastFetchTime = now;
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch market data" });
