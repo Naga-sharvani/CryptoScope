@@ -2,9 +2,11 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin:"https://crypto-scope-iota.vercel.app/"
+}));
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.get("/api/market-data", async (req, res) => {
   try {
