@@ -5,7 +5,7 @@ let lastFetchTime = 0;
 
 const app = express();
 app.use(cors({
-  origin:"https://crypto-scope-iota.vercel.app/"
+  origin:"https://crypto-scope-iota.vercel.app"
 }));
 
 const PORT = process.env.PORT || 5000;
@@ -75,5 +75,5 @@ app.get("/api/history/:symbol/:days", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
