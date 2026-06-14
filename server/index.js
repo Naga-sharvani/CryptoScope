@@ -4,8 +4,22 @@ let cache = null;
 let lastFetchTime = 0;
 
 const app = express();
+const allowedOrigins = [
+  "https://crypto-scope-iota.vercel.app",
+  "http://localhost:5173"
+];
+
 app.use(cors({
-  origin:"https://crypto-scope-iota.vercel.app"
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, or Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
 }));
 
 const PORT = process.env.PORT || 5000;
