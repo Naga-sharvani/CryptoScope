@@ -34,7 +34,7 @@ export default function PnL() {
             color:"#22c55e"
           }}
         >
-          ${2000.56}
+          ₹{2000.56}
         </div>
         </div>
      
@@ -49,7 +49,7 @@ export default function PnL() {
         </div>
 
       <div style={{ color: "#e7dbdb", opacity: 0.7 }}>
-        Invested Capital: $5200 💰
+        Invested Capital: ₹5200 💰
       </div>
     </div>
     </div>

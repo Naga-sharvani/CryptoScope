@@ -20,7 +20,7 @@ function Market({ name, price, change, isPositive }: Props) {
   return (
     <div
       className="card"
-      onClick={() => navigate(`/asset/${coinMap[name]}`)}
+      onClick={() => navigate(`/asset/₹{coinMap[name]}`)}
       style={{ cursor: "pointer" }}
     >
       <h3>{name}</h3>

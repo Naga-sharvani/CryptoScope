@@ -34,7 +34,7 @@ export default function Simulator() {
         {/* Input: Invested */}
         <div style={{ marginBottom: "15px" }}>
           <label style={{ display: "block", color: "#888", fontSize: "13px", marginBottom: "5px" }}>
-            Invested Amount ($)
+            Invested Amount (₹)
           </label>
           <input
             type="number"
@@ -57,7 +57,7 @@ export default function Simulator() {
         {/* Input: Buy Price */}
         <div style={{ marginBottom: "15px" }}>
           <label style={{ display: "block", color: "#888", fontSize: "13px", marginBottom: "5px" }}>
-            Buy Price ($)
+            Buy Price (₹)
           </label>
           <input
             type="number"
@@ -80,7 +80,7 @@ export default function Simulator() {
         {/* Input: Current Price */}
         <div style={{ marginBottom: "25px" }}>
           <label style={{ display: "block", color: "#888", fontSize: "13px", marginBottom: "5px" }}>
-            Current Market Price ($)
+            Current Market Price (₹)
           </label>
           <input
             type="number"
