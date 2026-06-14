@@ -82,20 +82,17 @@ CryptoScope/
 ## 📸 Screenshots
 
 ### Home Dashboard
-
-(Add Screenshot Here)
-
-### Market Analytics
-
-(Add Screenshot Here)
+<img width="1828" height="847" alt="home" src="https://github.com/user-attachments/assets/26d5193b-072b-44b7-916d-34e6fd3bfc18" />
 
 ### Asset Detail View
+<img width="1822" height="485" alt="assets" src="https://github.com/user-attachments/assets/0bef2bd0-d561-4919-ae10-656bd3b16879" />
 
-(Add Screenshot Here)
 
 ### Copy Trading UI
+<img width="1865" height="842" alt="copytrading" src="https://github.com/user-attachments/assets/2164eb76-bd27-4f65-b845-be5291e08e6c" />
 
-(Add Screenshot Here)
+### Simulate PnL UI
+<img width="1820" height="596" alt="Screenshot 2026-06-14 152340" src="https://github.com/user-attachments/assets/a0c16975-f749-4c5c-bd23-bf2296794163" />
 
 
 
